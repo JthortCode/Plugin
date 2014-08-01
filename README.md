@@ -1,0 +1,4 @@
+Plugin
+======
+
+Minecraft server plugin.
