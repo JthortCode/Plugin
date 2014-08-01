@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class HelpCommand implements CommandExecutor{
-    //hey Mansd fknasiodfn oaskldf asdnkllk
     Main plugin;
     
     public HelpCommand(Main plugin){
