@@ -32,8 +32,6 @@ public class HelpCommand implements CommandExecutor{
                            player.sendMessage(ChatColor.RED + "/" + cmdList.get(i).getLabel() + ChatColor.GRAY + " : " + ChatColor.GREEN + cmdList.get(i).getDescription());
                         }
                 }
-            }else{
-                
             }
         }
         return true;
