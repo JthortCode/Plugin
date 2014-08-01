@@ -1,0 +1,25 @@
+name: AllPlugins
+version: 1000
+main: Main.Main
+description: 
+    All of the plugins in one!
+commands:
+    twn:
+        description: Test Command
+        usage: |
+           /twn
+    symbols:
+        description: Symbol Toggling
+        aliases: [sym]
+        usage: |
+           /symbols
+    permissions:
+        description: Permission Related Commands
+        aliases: [perms]
+        usage: |
+           /permissions
+    help:
+        description: Use me for help!
+        usage: |
+           /help
+         
