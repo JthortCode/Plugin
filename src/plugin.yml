@@ -9,7 +9,7 @@ commands:
         usage: |
            /twn
     symbols:
-        description: Symbol Toggling
+        description: Symbols Related Commands
         aliases: [sym]
         usage: |
            /symbols

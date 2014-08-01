@@ -1,10 +1,7 @@
 package Profile;
 
 import Main.Main;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import org.bukkit.Bukkit;
 
 import org.bukkit.event.Listener;
 
@@ -41,7 +38,7 @@ public class Permissions implements Listener{
       String[] perms =  permissions.split(" ");
       
         for(String perm: perms){
-            if(perm.equals(permission)){
+            if(perm.equalsIgnoreCase(permission)){
                 return true;
             }
         }
@@ -49,9 +46,13 @@ public class Permissions implements Listener{
     }
     public void setGroup(String group){
         this.group = group;
-        plugin.getTools().getPrintFormatter().sendConsoleNotification(
-                       Bukkit.getPlayer(player).getName() + " is now in group " + group
-                );
+          for(String string: plugin.getConfig().getString(group).split(" ")){
+              if(!(string.equals("") || string.equals(" "))){
+                  if(!hasPermission(string.trim())){
+                      givePermission(string.trim());
+                  }
+              }
+          }
     }
     public String getGroup(){
         return group;
@@ -61,12 +62,9 @@ public class Permissions implements Listener{
         String[] perms =  permissions.split(" ");
         for(String perm: perms){
             perm = perm.trim();
-            if(perm.equals(permission)){
+            if(perm.equalsIgnoreCase(permission)){
                 String listofperms = permissions;
                 permissions = listofperms.replace(permission + " ", "");
-                plugin.getTools().getPrintFormatter().sendConsoleNotification(
-                        "Sucessfully removed permisssion (" + permission + ") for " + Bukkit.getPlayer(player).getName()
-                );
             }
         }
     }

@@ -35,9 +35,6 @@ public class ChatEvent implements Listener{
           if(!plugin.getProfileHandler().getProfile(player).getPermissions().hasPermission("Me.Chat.NoFilter")){
               temp = filter.filterProfanity(event.getMessage());
           }
-          if(plugin.getProfileHandler().getProfile(player).getPermissions().hasPermission("Me.Chat.Symbols")){
-              temp = filter.addSymbols(temp);
-          }
           
           filter.preventMessageToNewPlayers(event);
           

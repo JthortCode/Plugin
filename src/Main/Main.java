@@ -27,6 +27,7 @@ public class Main extends JavaPlugin implements Listener{
     PermissionsCommands permissionsComamnds;
     OnCommandEvent onCommandEvent;
     HelpCommand helpCommand;
+    ConfigHandler configHandler;
     
     /* Prevents multiple save instances */
     boolean useBackupSave = false;
@@ -48,6 +49,8 @@ public class Main extends JavaPlugin implements Listener{
          useBackupSave = true;
      }
      
+     configHandler = new ConfigHandler(this);
+     
      //Initialize this first so printFormatter is enabled
      tools = new Tools(this);
      
@@ -56,7 +59,8 @@ public class Main extends JavaPlugin implements Listener{
      onJoinEvent = new OnJoinEvent(this); 
      pm.registerEvents(onJoinEvent, this);
     
-  
+     
+     
      chat = new ChatEvent(this, new ChatFilter(this));
      pm.registerEvents(chat, this);
      
@@ -87,7 +91,6 @@ public class Main extends JavaPlugin implements Listener{
      }else{
          alreadySaved = true;
          profileHandler.saveProfiles();
-         System.out.println("disable method save");
      }
  }
  public Tools getTools(){
@@ -104,5 +107,8 @@ public class Main extends JavaPlugin implements Listener{
  }
  public boolean isAlreadySaved(){
      return alreadySaved;
+ }
+ public ConfigHandler getConfigHandler(){
+     return configHandler;
  }
 }

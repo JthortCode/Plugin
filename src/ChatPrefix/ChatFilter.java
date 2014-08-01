@@ -12,7 +12,7 @@ public class ChatFilter {
     
     Main plugin;
     String noTag = "[None]";
-    String userTag = "[User] ";
+    String userTag = "[Default] ";
     String modTag = "[Mod] ";
     String adminTag = "[Admin] ";
     String ownerTag = "[Owner] ";
@@ -79,28 +79,32 @@ public class ChatFilter {
               "Modified " + event.getPlayer().getName() + "'s message: " + originalMessage
               );
           }
-        if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Default")){
+            if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().hasPermission("Me.Chat.Symbols")){
+                temp = addSymbols(temp);
+            }
+            
+        if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Default")){
               event.setFormat(ChatColor.GRAY + userTag + event.getPlayer().getDisplayName()
                       + " " + ChatColor.RESET + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Mod")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Mod")){
               event.setFormat(ChatColor.GREEN + modTag + event.getPlayer().getDisplayName()
                       + " " + ChatColor.RESET + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Admin")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Admin")){
               event.setFormat(ChatColor.RED + adminTag + event.getPlayer().getDisplayName()
                       + " " + ChatColor.RESET + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Owner")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Owner")){
               event.setFormat(ChatColor.DARK_BLUE + ownerTag + event.getPlayer().getDisplayName()
                       + " " + ChatColor.RESET + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Trusted")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Trusted")){
               event.setFormat(ChatColor.GRAY + "" + ChatColor.ITALIC + trustedTag + ChatColor.RESET +  event.getPlayer().getDisplayName()
                       + " " + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("Donator")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("Donator")){
               event.setFormat(ChatColor.GOLD + "" + ChatColor.ITALIC + donatorTag + ChatColor.RESET +  event.getPlayer().getDisplayName()
                       + " " + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("DonatorPlus")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("DonatorPlus")){
               event.setFormat(ChatColor.GOLD + "" + ChatColor.ITALIC + donatorPlusTag + ChatColor.RESET +  event.getPlayer().getDisplayName()
                       + " " + temp);
-          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equals("DonatorKing")){
+          }else if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().getGroup().equalsIgnoreCase("DonatorKing")){
               event.setFormat(ChatColor.GOLD + "" + ChatColor.ITALIC + donatorKingTag + ChatColor.RESET +  event.getPlayer().getDisplayName()
                       + " " + temp);
           }else{

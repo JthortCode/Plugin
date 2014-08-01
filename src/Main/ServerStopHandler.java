@@ -13,9 +13,7 @@ public class ServerStopHandler extends Thread{
         /*
         Runs when the server is shutdown, no matter how "brutual" the server was closed
         */
-        if(plugin.isAlreadySaved()){
-            
-        }else{
+        if(!plugin.isAlreadySaved()){
             System.out.println("Thread save");
             plugin.getProfileHandler().saveProfiles();
              plugin.alreadySaved = true;

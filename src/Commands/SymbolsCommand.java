@@ -1,9 +1,12 @@
 package Commands;
 
 import Main.Main;
+import Profile.Permissions;
 import Profile.Profile;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,7 +46,29 @@ public class SymbolsCommand implements CommandExecutor{
                     plugin.getTools().getPrintFormatter().sendConsoleError("You cannot give symbols to yourself!");
                 }
             }else if(args.length == 1){
-                if(sender instanceof Player){
+                if(args[0].equalsIgnoreCase("help")){
+                    if(sender instanceof Player){
+                        Player player = (Player) sender;
+                        Permissions permissions = plugin.getProfileHandler().getProfile(player.getUniqueId()).getPermissions();
+                        if(permissions.hasPermission("Me.Command.SymbolsHelp")){
+                            player.sendMessage(ChatColor.RED + "--------[ Symbols Help Menu ]---------");
+                            if(permissions.hasPermission("Me.Command.Symbols")){
+                            player.sendMessage(ChatColor.RED + "/Symbols - " + ChatColor.GREEN + "Toggle your symbols filter");
+                            }
+                            if(permissions.hasPermission("Me.Command.Symbols.Other")){
+                            player.sendMessage(ChatColor.RED + "/Symbols <User> - " + ChatColor.GREEN + "Toggle symbols for another player. (Doesn't prevent the use of the command)");
+                            }
+                            player.sendMessage(ChatColor.RED + "/Symbols help - " + ChatColor.GREEN + "Symbols help menu");
+                        }else{
+                         plugin.getTools().getPrintFormatter().sendPlayerError(player, "You don't have permission to perform this command!");
+                        }
+                    }else{
+                        sender.sendMessage(ChatColor.RED + "--------[ Symbols Help Menu (Console) ]---------");
+                        sender.sendMessage(ChatColor.RED + "/Symbols - " + ChatColor.GREEN + "Toggle your symbols filter");
+                        sender.sendMessage(ChatColor.RED + "/Symbols <User> - " + ChatColor.GREEN + "Toggle symbols for another player. (Doesn't prevent the use of the command)");
+                        sender.sendMessage(ChatColor.RED + "/Symbols help - " + ChatColor.GREEN + "Symbols help menu");
+                    }
+                }else if(sender instanceof Player){
                     Player player = (Player) sender;
                     Profile profile = plugin.getProfileHandler().getProfile(player.getUniqueId());
                     if(profile.getPermissions().hasPermission("Me.Command.Symbols.Other")){
@@ -59,7 +84,18 @@ public class SymbolsCommand implements CommandExecutor{
                                 plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(Bukkit.getPlayer(otherPlayer), player.getName() + " gave you the permission to use symbols in chat!");
                             }
                         }catch(Exception ex){
-                            plugin.getTools().getPrintFormatter().sendPlayerError(player, "Cannot find " + args[0] + "!");
+                            try{
+                                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+                                if(plugin.getProfileHandler().getProfile(offlinePlayer.getUniqueId()).getPermissions().hasPermission("Me.Chat.Symbols")){
+                                plugin.getProfileHandler().getProfile(offlinePlayer.getUniqueId()).getPermissions().removePermission("Me.Chat.Symbols");
+                                plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(player, "You removed " + args[0] + "'s permission to use symbols in chat!");
+                            }else{
+                                plugin.getProfileHandler().getProfile(offlinePlayer.getUniqueId()).getPermissions().givePermission("Me.Chat.Symbols");
+                                plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(player, "You gave " + args[0] + " the permission to use symbols in chat!");
+                            }
+                            }catch(Exception ez){
+                                plugin.getTools().getPrintFormatter().sendPlayerError(player, "Player not found: " + args[0]);
+                            }
                         }
                     }else{
                         plugin.getTools().getPrintFormatter().sendPlayerError(player, "You don't have permission to perform this command!");
@@ -91,7 +127,5 @@ public class SymbolsCommand implements CommandExecutor{
             }
         }
         return true;
-    }
-    
-    
+    } 
 }
