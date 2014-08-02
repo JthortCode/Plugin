@@ -17,6 +17,7 @@ import Profile.Permissions;
 import Profile.ProfileHandler;
 import RPG.RPGHandler;
 import Tools.Tools;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -50,7 +51,6 @@ public class Main extends JavaPlugin implements Listener{
      tools = new Tools(this);
      getTools().getPrintFormatter().sendConsoleNotification("Loading Objects...");
      PluginManager pm = getServer().getPluginManager();
-     
      //Prevents data loss on unsupported shutdown by the ondisable method
      try{
          Runtime.getRuntime().addShutdownHook(new ServerStopHandler(this));
@@ -59,7 +59,6 @@ public class Main extends JavaPlugin implements Listener{
                  ChatColor.RED + "Error while starting up Runtime Stop Handler, Reverting to Alternate method.");
          useBackupSave = true;
      }
-     
      configHandler = new ConfigHandler(this);
      
      //Initialize this first so printFormatter is enabled
