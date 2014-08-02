@@ -15,7 +15,6 @@ public class ReplyCommand implements CommandExecutor{
     public ReplyCommand(Main plugin){
         this.plugin = plugin;
     }
-          //Sender, reciever
     
       @Override
     public boolean onCommand(CommandSender sender, Command cmnd, String command, String[] args) {
