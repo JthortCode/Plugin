@@ -170,7 +170,7 @@ public class ChatFilter {
     return ch < 128;
      }
     public void preventMessageToNewPlayers(PlayerChatEvent event){
-        for(UUID player: plugin.getOnJoinEvent().getGraceChatPlayers()){
+        for(UUID player: plugin.getOnJoinEvent().getGracePlayers()){
             try{
             event.getRecipients().remove(Bukkit.getPlayer(player));
             }catch(Exception ex){

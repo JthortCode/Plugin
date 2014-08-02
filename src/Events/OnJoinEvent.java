@@ -35,7 +35,7 @@ public class OnJoinEvent implements Listener{
               }
               plugin.getRPGHandler().getRandomTeleporter().sendToRandomLocation(event.getPlayer());
               plugin.getTools().getPrintFormatter().sendPlayerDazedMessage(event.getPlayer());
-              addGraceChat(event.getPlayer());
+              addGrace(event.getPlayer());
           }else{
               event.setJoinMessage("");
               for(Player player: Bukkit.getOnlinePlayers()){
@@ -54,7 +54,7 @@ public class OnJoinEvent implements Listener{
           }
           return false;
       }
-      private void addGraceChat(final Player player){
+      private void addGrace(final Player player){
         gracePlayers.add(player.getUniqueId());
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
@@ -64,7 +64,7 @@ public class OnJoinEvent implements Listener{
             }
     	}, 200);
     }
-      public List<UUID> getGraceChatPlayers(){
+      public List<UUID> getGracePlayers(){
           return gracePlayers;
       }
 }

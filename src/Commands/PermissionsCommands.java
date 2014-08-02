@@ -3,16 +3,13 @@ package Commands;
 import Main.Main;
 import Profile.Permissions;
 import Profile.Profile;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 public class PermissionsCommands implements CommandExecutor{
     
@@ -82,7 +79,34 @@ public class PermissionsCommands implements CommandExecutor{
                     }
                     break;
                 case 2://////////////////////////////////////////////////////////////////////////////
-                    plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid arguments!");
+                    if(args[0].equalsIgnoreCase("deleteprofile")){
+                         if(sender instanceof Player){
+                            Player playerSender = (Player) sender;
+                            if(!plugin.getProfileHandler().getProfile(playerSender.getUniqueId()).getPermissions().hasPermission("Me.Command.Deleteprofile")){
+                               plugin.getTools().getPrintFormatter().sendPlayerError(playerSender, "You don't have permission to perform this command!");
+                               break;
+                            }
+                        }  
+                        
+                        try{
+                            Player targetPlayer = Bukkit.getPlayer(args[1]);
+                            plugin.getProfileHandler().deleteProfile(plugin.getProfileHandler().getProfile(targetPlayer.getUniqueId()));
+                            plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully deleted " + args[1] + "'s profile!");
+                            plugin.getTools().getPrintFormatter().sendPlayerError(targetPlayer, "Your profile was reset by " + sender.getName());
+                            plugin.getProfileHandler().getProfiles().add(new Profile(plugin, targetPlayer.getUniqueId()));
+                            plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully generated a new profile for " + args[1]);
+                        }catch(Exception ex){
+                            try{
+                            OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                            plugin.getProfileHandler().deleteProfile(plugin.getProfileHandler().getProfile(target.getUniqueId()));
+                            plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully deleted " + args[1] + "'s profile!");
+                            plugin.getProfileHandler().getProfiles().add(new Profile(plugin, target.getUniqueId()));
+                            plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully generated a new profile for " + args[1]);
+                            }catch(Exception ez){
+                                plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid player " + args[1]);
+                            }
+                        }
+                    }
                     break;
                 case 3:///////////////////////////////////////////////////////////////////////////////////////
                     //perm give Ian ""
@@ -148,24 +172,32 @@ public class PermissionsCommands implements CommandExecutor{
                         }
                     }else if(args[0].equalsIgnoreCase("setgroup")){
                         if(sender instanceof Player){
+                            
                             Player player = (Player) sender;
+                            if(!plugin.getProfileHandler().getProfile(player.getUniqueId()).getPermissions().hasPermission("Me.Command.Setgroup")){
+                                plugin.getTools().getPrintFormatter().sendPlayerError(player, "You don't have permission to perform this command!");
+                                break;
+                            }
+                        }
                             try{
                                 Player targetPlayer = Bukkit.getPlayer(args[1]);
                                 plugin.getProfileHandler().getProfile(targetPlayer.getUniqueId()).getPermissions().setGroup(args[2]);
-                                plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(player, "Sucessfully set " + args[1] + "'s group to " + args[2]);
-                                plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(targetPlayer, player.getName() + " changed you to group " + args[2]);
+                                plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully set " + args[1] + "'s group to " + args[2]);
+                                plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(targetPlayer, sender.getName() + " changed you to group " + args[2]);
                             }catch(Exception ex){
                                 try{
                                     OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                                    try{
                                     plugin.getProfileHandler().getProfile(target.getUniqueId()).getPermissions().setGroup(args[2]);
-                                    plugin.getTools().getPrintFormatter().sendPlayerAccomplishmentMessage(player, "Sucessfully set " + args[1] + "'s group to " + args[2]);
+                                    }catch(Exception ey){
+                                        plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid group! " + args[2]);
+                                    }
+                                    plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully set " + args[1] + "'s group to " + args[2]);
                                 }catch(Exception ez){
-                                    plugin.getTools().getPrintFormatter().sendPlayerError(player, "Invalid player: " + args[1]);
+                                    plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid player: " + args[1]);
                                 }
                             }
-                        }else{
-                            
-                        }
+                        
                     }else{
                         plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid arguments!");
                     }

@@ -35,12 +35,7 @@ public class ProfileHandler{
             plugin.getTools().getPrintFormatter().sendConsoleError("Error while saving Permissions Config, code: 26436EF");
         }
     }
-    public void createNewProfie(UUID player){
-          profileConfig.set(player.toString(), " ");
-          profileConfig.set(player.toString() + ".Perms", " ");
-          savePermissionsConfig();
-          setGroup(player, "Default"); 
-    }
+
     private void setGroup(UUID player, String group){
         profileConfig.set(player + ".Group", group);
         savePermissionsConfig();
@@ -83,6 +78,10 @@ public class ProfileHandler{
         }
         savePermissionsConfig();
         plugin.getTools().getPrintFormatter().sendConsoleNotification("Done.");
+    }
+    public void deleteProfile(Profile profile){
+        profiles.remove(profile);
+        profile = null;
     }
 
 }

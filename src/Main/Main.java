@@ -6,6 +6,8 @@ import Events.ChatEvent;
 import ChatPrefix.ChatFilter;
 import Commands.HelpCommand;
 import Commands.PermissionsCommands;
+import Events.EntDamageEntityEvent;
+import Events.EntDamageEvent;
 import Events.OnCommandEvent;
 import Events.OnJoinEvent;
 import Profile.Permissions;
@@ -28,6 +30,9 @@ public class Main extends JavaPlugin implements Listener{
     OnCommandEvent onCommandEvent;
     HelpCommand helpCommand;
     ConfigHandler configHandler;
+    EntDamageEntityEvent entDamageEntityEvent;
+    EntDamageEvent entDamageEvent;
+   
     
     /* Prevents multiple save instances */
     boolean useBackupSave = false;
@@ -36,9 +41,9 @@ public class Main extends JavaPlugin implements Listener{
     
     @Override
  public void onEnable(){
-     
+     tools = new Tools(this);
+     getTools().getPrintFormatter().sendConsoleNotification("Loading Objects...");
      PluginManager pm = getServer().getPluginManager();
-     pm.registerEvents(this, this);
      
      //Prevents data loss on unsupported shutdown by the ondisable method
      try{
@@ -52,7 +57,6 @@ public class Main extends JavaPlugin implements Listener{
      configHandler = new ConfigHandler(this);
      
      //Initialize this first so printFormatter is enabled
-     tools = new Tools(this);
      
      profileHandler = new ProfileHandler(this);
      
@@ -80,6 +84,14 @@ public class Main extends JavaPlugin implements Listener{
      
      onCommandEvent = new OnCommandEvent(this);
      pm.registerEvents(onCommandEvent, this);
+     
+     entDamageEntityEvent = new EntDamageEntityEvent(this);
+     pm.registerEvents(entDamageEntityEvent, this);
+     
+     entDamageEvent = new EntDamageEvent(this);
+     pm.registerEvents(entDamageEvent, this);
+     
+     getTools().getPrintFormatter().sendConsoleNotification("Done.");
  }
  
  @Override
