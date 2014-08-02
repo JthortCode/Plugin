@@ -1,5 +1,5 @@
 
-package ChatPrefix;
+package Tools;
 
 import Main.Main;
 import java.util.Random;
@@ -177,5 +177,13 @@ public class ChatFilter {
                 //trown if the player logged off as the grace period was still active.
             }
         }
+    }
+    public boolean isSentToGracePlayer(String playerSender, String playerTaker){
+        if(plugin.getOnJoinEvent().getGracePlayers().contains(Bukkit.getPlayer(playerTaker).getUniqueId())){
+            return true;
+        }
+         return false;
+       
+          
     }
 }

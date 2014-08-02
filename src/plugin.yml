@@ -22,4 +22,14 @@ commands:
         description: Use me for help!
         usage: |
            /help
+    message:
+        description: Send a player a private message
+        aliases: [msg]
+        usage: |
+           /message
+    reply:
+        description: reply to a player's private message
+        aliases: [r]
+        usage: |
+           /reply
          

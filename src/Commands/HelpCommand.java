@@ -35,7 +35,7 @@ public class HelpCommand implements CommandExecutor{
                               player.sendMessage(ChatColor.RED + "/" + cmdList.get(i).getLabel() + ChatColor.GRAY + " : " + ChatColor.GREEN + cmdList.get(i).getDescription());
                             }
                         }
-                }
+                    }
                 }else{
                     plugin.getTools().getPrintFormatter().sendPlayerError(player, "You don't have permission to perform this command!");
                 }
@@ -62,6 +62,12 @@ public class HelpCommand implements CommandExecutor{
                             if(permissions.hasPermission("Me.Command.Permissions.Other")){
                                 player.sendMessage(ChatColor.RED + "/perms <User> - " + ChatColor.GREEN + "View another users permissions");
                             }
+                            if(permissions.hasPermission("Me.Command.Deleteprofile")){
+                                player.sendMessage(ChatColor.RED + "/perms deleteprofile <User> - " + ChatColor.GREEN + "Set another users group");
+                            }
+                            if(permissions.hasPermission("Me.Command.Setgroup")){
+                                player.sendMessage(ChatColor.RED + "/perms setgroup <User> <Group> - " + ChatColor.GREEN + "Set another users group");
+                            }
                             }else{
                                 plugin.getTools().getPrintFormatter().sendPlayerError(player, "You don't have permission to perform this command!");
                             }
@@ -71,6 +77,8 @@ public class HelpCommand implements CommandExecutor{
                             sender.sendMessage(ChatColor.RED + "/perms <User> - " + ChatColor.GREEN + "View another players permissions");
                             sender.sendMessage(ChatColor.RED + "/perms give <User> <Permission> - " + ChatColor.GREEN + "Give another player a permission");
                             sender.sendMessage(ChatColor.RED + "/perms remove <User> <Permission> - " + ChatColor.GREEN + "Remove another players permission");
+                            sender.sendMessage(ChatColor.RED + "/perms deleteprofile <User> - " + ChatColor.GREEN + "Delete another users profile!");
+                            sender.sendMessage(ChatColor.RED + "/perms setgroup <User> <Group> - " + ChatColor.GREEN + "Set another users group");
                         }
                 }else if(args[0].equalsIgnoreCase("symbols") || args[0].equalsIgnoreCase("sym")){
                     if(sender instanceof Player){

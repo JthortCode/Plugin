@@ -17,3 +17,8 @@ trusted: ' '
 
 donatorking: ' '
 
+leavemessages:
+    - Enter leave message here ($ for players name)
+joinmessages:
+    - Enter join messages here ($ for players name)
+

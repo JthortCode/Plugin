@@ -1,7 +1,7 @@
 
 package Events;
 
-import ChatPrefix.ChatFilter;
+import Tools.ChatFilter;
 import Main.Main;
 import java.util.Random;
 import java.util.UUID;
@@ -16,11 +16,8 @@ public class ChatEvent implements Listener{
     
     Main plugin;
     
-    ChatFilter filter;
-    
     public ChatEvent(Main plugin, ChatFilter filter){
         this.plugin = plugin;
-       this.filter = filter;
     }
     
     
@@ -33,12 +30,12 @@ public class ChatEvent implements Listener{
           UUID player = event.getPlayer().getUniqueId();
           
           if(!plugin.getProfileHandler().getProfile(player).getPermissions().hasPermission("Me.Chat.NoFilter")){
-              temp = filter.filterProfanity(event.getMessage());
+              temp = plugin.getTools().getChatFilter().filterProfanity(event.getMessage());
           }
           
-          filter.preventMessageToNewPlayers(event);
+          plugin.getTools().getChatFilter().preventMessageToNewPlayers(event);
           
-          filter.addRankTag(temp, event, originalMessage);
+          plugin.getTools().getChatFilter().addRankTag(temp, event, originalMessage);
           
          
       }

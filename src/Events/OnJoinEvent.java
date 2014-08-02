@@ -4,8 +4,10 @@ import Main.Main;
 import Profile.Profile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,9 +40,10 @@ public class OnJoinEvent implements Listener{
               addGrace(event.getPlayer());
           }else{
               event.setJoinMessage("");
+              String randJoinMessage = getRandomJoinMessage(event.getPlayer().getName());
               for(Player player: Bukkit.getOnlinePlayers()){
                   if(!event.getPlayer().getName().equals(player.getName())){
-                      plugin.getTools().getPrintFormatter().sendPlayerNotification(player, event.getPlayer().getName() + " has joined!");
+                      player.sendMessage(ChatColor.YELLOW + "[Jthort] " + ChatColor.GRAY +randJoinMessage);
                   }
               }
               plugin.getTools().getPrintFormatter().sendPlayerNotification(event.getPlayer(), "Welcome back!");
@@ -60,11 +63,22 @@ public class OnJoinEvent implements Listener{
             @Override
             public void run() {
     		gracePlayers.remove(player.getUniqueId());
-                plugin.getTools().getPrintFormatter().sendPlayerNotification(player, "You can now chat with other players.");
+                plugin.getTools().getPrintFormatter().sendPlayerNotification(player, "You are no longer in grace period, have fun!");
             }
     	}, 200);
     }
       public List<UUID> getGracePlayers(){
           return gracePlayers;
+      }
+      private String getRandomJoinMessage(String player){
+          List<String> listOfMessages = new ArrayList();
+          for(String message : plugin.getConfig().getStringList("joinmessages")){
+              listOfMessages.add(message);
+          }
+          Random random = new Random();
+          int randInt = random.nextInt(listOfMessages.size());
+          String randomMessage = listOfMessages.get(randInt);
+           randomMessage = randomMessage.replace("$", player);
+           return randomMessage;
       }
 }

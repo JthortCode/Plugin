@@ -3,13 +3,16 @@ package Main;
 
 import Commands.SymbolsCommand;
 import Events.ChatEvent;
-import ChatPrefix.ChatFilter;
+import Tools.ChatFilter;
 import Commands.HelpCommand;
+import Commands.MessageCommand;
 import Commands.PermissionsCommands;
+import Commands.ReplyCommand;
 import Events.EntDamageEntityEvent;
 import Events.EntDamageEvent;
 import Events.OnCommandEvent;
 import Events.OnJoinEvent;
+import Events.OnLeaveEvent;
 import Profile.Permissions;
 import Profile.ProfileHandler;
 import RPG.RPGHandler;
@@ -20,6 +23,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener{
+    
     Tools tools;
     ChatEvent chat;
     SymbolsCommand chatCommands;
@@ -32,7 +36,9 @@ public class Main extends JavaPlugin implements Listener{
     ConfigHandler configHandler;
     EntDamageEntityEvent entDamageEntityEvent;
     EntDamageEvent entDamageEvent;
-   
+    OnLeaveEvent onLeaveEvent;
+    MessageCommand messageCommand;
+    ReplyCommand replyCommand;
     
     /* Prevents multiple save instances */
     boolean useBackupSave = false;
@@ -80,8 +86,18 @@ public class Main extends JavaPlugin implements Listener{
      helpCommand = new HelpCommand(this);
      getCommand("help").setExecutor(helpCommand);
      
+     messageCommand = new MessageCommand(this);
+     getCommand("message").setExecutor(messageCommand);
+     getCommand("msg").setExecutor(messageCommand);
+     
+     replyCommand = new ReplyCommand(this);
+     getCommand("reply").setExecutor(replyCommand);
+     getCommand("r").setExecutor(replyCommand);
+     
+     /* Set up extra classes */
      rpgHandler = new RPGHandler(this);
      
+     /* Set up event handlers */
      onCommandEvent = new OnCommandEvent(this);
      pm.registerEvents(onCommandEvent, this);
      
@@ -91,6 +107,9 @@ public class Main extends JavaPlugin implements Listener{
      entDamageEvent = new EntDamageEvent(this);
      pm.registerEvents(entDamageEvent, this);
      
+     onLeaveEvent = new OnLeaveEvent(this);
+     pm.registerEvents(onLeaveEvent, this);
+ 
      getTools().getPrintFormatter().sendConsoleNotification("Done.");
  }
  
@@ -122,5 +141,8 @@ public class Main extends JavaPlugin implements Listener{
  }
  public ConfigHandler getConfigHandler(){
      return configHandler;
+ }
+ public MessageCommand getMessageCommand(){
+     return messageCommand;
  }
 }

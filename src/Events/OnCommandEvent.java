@@ -21,10 +21,16 @@ public class OnCommandEvent implements Listener{
     
     @EventHandler
     public void PlayerCommand(PlayerCommandPreprocessEvent event) {
-       if(!isValidCommand(event.getMessage().split(" ")[0], event.getPlayer())){
-           plugin.getTools().getPrintFormatter().sendPlayerError(event.getPlayer(), "You don't have permission to perform this command!!");
-           event.setCancelled(true);
-       }
+        if(plugin.getOnJoinEvent().getGracePlayers().contains(event.getPlayer().getUniqueId())){
+            event.setCancelled(true);
+        }else{
+            if(!isValidCommand(event.getMessage().split(" ")[0], event.getPlayer())){
+                if(!plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()).getPermissions().hasPermission("Me.Command.AllowAdminCommands")){
+                   plugin.getTools().getPrintFormatter().sendPlayerError(event.getPlayer(), "You don't have permission to perform this command!!");
+                   event.setCancelled(true);
+                }
+            }
+         }
     }
     public boolean isValidCommand(String command, Player player){
         for(Plugin plug : Bukkit.getPluginManager().getPlugins()){
