@@ -34,6 +34,7 @@ public class ReplyCommand implements CommandExecutor{
                         }
                         
                       if(plugin.getMessageCommand().a(player.getName())){
+                          try{
                           Player otherPlayer = Bukkit.getPlayer(plugin.getMessageCommand().getOtherPlayer(player.getName()));
                           if(!plugin.getTools().getChatFilter().isSentToGracePlayer(player.getName(), otherPlayer.getName())){
                           plugin.getMessageCommand().getList().remove(otherPlayer.getName());
@@ -44,6 +45,9 @@ public class ReplyCommand implements CommandExecutor{
                             player.sendMessage(ChatColor.DARK_GRAY + "You" + ChatColor.GREEN+" -> "+ChatColor.DARK_GRAY+otherPlayer.getName() + " " + ChatColor.GRAY + message);
                           }else{
                               plugin.getTools().getPrintFormatter().sendPlayerError(player, "That player is in grace period!");
+                          }
+                          }catch(Exception ex){
+                                  plugin.getTools().getPrintFormatter().sendPlayerError(player, "You have nobody to respond to.");
                           }
                       }else{
                           plugin.getTools().getPrintFormatter().sendPlayerError(player, "You have nobody to respond to.");

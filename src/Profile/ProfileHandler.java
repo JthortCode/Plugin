@@ -4,10 +4,13 @@ import Main.Main;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scoreboard.Objective;
 
 public class ProfileHandler{
     
@@ -61,6 +64,10 @@ public class ProfileHandler{
             profileConfig.set(profile.getProfileUUID().toString(), "");
             profileConfig.set(profile.getProfileUUID().toString() + ".Perms", profile.getPermissions().getPermissions());
             profileConfig.set(profile.getProfileUUID().toString() + ".Group", profile.getPermissions().getGroup());
+            profileConfig.set(profile.getProfileUUID().toString() + ".Stats", "");
+            for (Map.Entry<String, Double> entry : profile.getStats().getXpData().entrySet()) {
+                profileConfig.set(profile.getProfileUUID().toString() + ".Stats." + entry.getKey(), entry.getValue());
+            }
             savePermissionsConfig();
         }
         
@@ -73,11 +80,19 @@ public class ProfileHandler{
                                 UUID.fromString(uid), 
                                 profileConfig.getString(UUID.fromString(uid) + ".Perms"),
                                 profileConfig.getString(UUID.fromString(uid) + ".Group"));
-           Profile profile = new Profile(plugin, UUID.fromString(uid), pemissions);
+            HashMap <String,Double> Xp = new HashMap();
+            for(String skill : plugin.getScoreboardHandler().getSkillList()){
+                Xp.put(skill, profileConfig.getDouble(uid + ".Stats." + skill));
+            }
+            Stats stats = new Stats(plugin, 
+                    UUID.fromString(uid),
+                    Xp
+            );
+           Profile profile = new Profile(plugin, UUID.fromString(uid), pemissions, stats);
            profiles.add(profile);
         }
         savePermissionsConfig();
-        plugin.getTools().getPrintFormatter().sendConsoleNotification("Done.");
+        plugin.getTools().getPrintFormatter().sendConsoleNotification("Done Loading profiles.");
     }
     public void deleteProfile(Profile profile){
         profiles.remove(profile);

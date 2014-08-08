@@ -28,7 +28,7 @@ public class OnJoinEvent implements Listener{
      @EventHandler
       public void onPlayerJoin(PlayerJoinEvent event){
           if(plugin.getProfileHandler().getProfile(event.getPlayer().getUniqueId()) == null){
-              plugin.getProfileHandler().getProfiles().add(new Profile(plugin, event.getPlayer().getUniqueId()));
+              plugin.getProfileHandler().getProfiles().add(new Profile(plugin, event.getPlayer().getUniqueId(), true));
               event.setJoinMessage("");
               for(Player player: Bukkit.getOnlinePlayers()){
                   if(!event.getPlayer().getName().equals(player.getName())){

@@ -8,16 +8,19 @@ import Commands.HelpCommand;
 import Commands.MessageCommand;
 import Commands.PermissionsCommands;
 import Commands.ReplyCommand;
+import Commands.TestCommand;
+import Events.BlockBreak;
 import Events.EntDamageEntityEvent;
 import Events.EntDamageEvent;
+import Events.FurnaceSmelt;
 import Events.OnCommandEvent;
 import Events.OnJoinEvent;
 import Events.OnLeaveEvent;
-import Profile.Permissions;
 import Profile.ProfileHandler;
 import RPG.RPGHandler;
+import ScoreboardManager.ScoreboardHandler;
+import Skills.SkillHandler;
 import Tools.Tools;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -40,6 +43,10 @@ public class Main extends JavaPlugin implements Listener{
     OnLeaveEvent onLeaveEvent;
     MessageCommand messageCommand;
     ReplyCommand replyCommand;
+    ScoreboardHandler scoreboardHandler;
+    BlockBreak blockBreak;
+    SkillHandler skillHandler;
+    FurnaceSmelt furnaceSmelt;
     
     /* Prevents multiple save instances */
     boolean useBackupSave = false;
@@ -61,7 +68,8 @@ public class Main extends JavaPlugin implements Listener{
      }
      configHandler = new ConfigHandler(this);
      
-     //Initialize this first so printFormatter is enabled
+     //Initialize before profilehandler
+     scoreboardHandler = new ScoreboardHandler(this);
      
      profileHandler = new ProfileHandler(this);
      
@@ -95,6 +103,7 @@ public class Main extends JavaPlugin implements Listener{
      
      /* Set up extra classes */
      rpgHandler = new RPGHandler(this);
+     skillHandler = new SkillHandler(this);
      
      /* Set up event handlers */
      onCommandEvent = new OnCommandEvent(this);
@@ -108,6 +117,14 @@ public class Main extends JavaPlugin implements Listener{
      
      onLeaveEvent = new OnLeaveEvent(this);
      pm.registerEvents(onLeaveEvent, this);
+     
+     blockBreak = new BlockBreak(this);
+     pm.registerEvents(blockBreak, this);
+     
+     furnaceSmelt = new FurnaceSmelt(this);
+     pm.registerEvents(furnaceSmelt, this);
+     
+     getCommand("twn").setExecutor(new TestCommand(this));
  
      getTools().getPrintFormatter().sendConsoleNotification("Done.");
  }
@@ -143,5 +160,11 @@ public class Main extends JavaPlugin implements Listener{
  }
  public MessageCommand getMessageCommand(){
      return messageCommand;
+ }
+ public ScoreboardHandler getScoreboardHandler(){
+     return scoreboardHandler;
+ }
+ public SkillHandler getSkillHandler(){
+     return skillHandler;
  }
 }

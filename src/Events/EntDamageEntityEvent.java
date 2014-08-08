@@ -37,5 +37,6 @@ public class EntDamageEntityEvent implements Listener{
                   }
               }
           }
+          plugin.getSkillHandler().getRangeHandler().updateRangeStat(event);
       }
 }

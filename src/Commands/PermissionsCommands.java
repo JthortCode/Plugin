@@ -101,15 +101,15 @@ public class PermissionsCommands implements CommandExecutor{
                             plugin.getProfileHandler().deleteProfile(plugin.getProfileHandler().getProfile(targetPlayer.getUniqueId()));
                             plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully deleted " + args[1] + "'s profile!");
                             plugin.getTools().getPrintFormatter().sendPlayerError(targetPlayer, "Your profile was reset by " + sender.getName());
-                            plugin.getProfileHandler().getProfiles().add(new Profile(plugin, targetPlayer.getUniqueId()));
+                           plugin.getProfileHandler().getProfiles().add(new Profile(plugin, targetPlayer.getUniqueId(), true));
                             plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully generated a new profile for " + args[1]);
                         }catch(Exception ex){
                             try{
                             OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
                             plugin.getProfileHandler().deleteProfile(plugin.getProfileHandler().getProfile(target.getUniqueId()));
                             plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully deleted " + args[1] + "'s profile!");
-                            plugin.getProfileHandler().getProfiles().add(new Profile(plugin, target.getUniqueId()));
-                            plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully generated a new profile for " + args[1]);
+                            plugin.getProfileHandler().getProfiles().add(new Profile(plugin, target.getUniqueId(), true));
+                           plugin.getTools().getPrintFormatter().sendUserAccomplishmentMessage(sender, "Sucessfully generated a new profile for " + args[1]);
                             }catch(Exception ez){
                                 plugin.getTools().getPrintFormatter().sendUserError(sender, "Invalid player " + args[1]);
                             }
